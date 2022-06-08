@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_recipes/data/dummy_data.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,13 +31,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    List listaCategoria = DUMMY_CATEGORIES;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Vamos Cozinhar?'),
       ),
-      body: const Center(
-        child: Text('Navegar é importante!'),
-      ),
+      body: const Center(),
     );
   }
 }
