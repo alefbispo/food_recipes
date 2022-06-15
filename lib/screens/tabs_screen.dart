@@ -34,7 +34,7 @@ class _TabsScreenState extends State<TabsScreen> {
         title: Center(child: Text(_titles[_selectedScreenIndex])),
       ),
       body: _screens[_selectedScreenIndex],
-      drawer: const MainDrawer(),
+      drawer:  MainDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectSceen,
         unselectedItemColor: Colors.white,
