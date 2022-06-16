@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_recipes/data/dummy_data.dart';
 import 'package:food_recipes/models/meal.dart';
+import 'package:food_recipes/models/settings.dart';
 import 'package:food_recipes/screens/category_meals_screen.dart';
 import 'package:food_recipes/screens/meal_detail_screen.dart';
 import 'package:food_recipes/screens/settings_screen.dart';
@@ -18,7 +19,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final List<Meal> _availableMeals = DUMMY_MEALS;
+  List<Meal> _availableMeals = DUMMY_MEALS;
+
+  void _filterMeals(Settings settings) {
+    setState(() {
+      _availableMeals = DUMMY_MEALS.where((meal) {
+        final filterGluten = settings.isGlutenFree && !meal.isGlutenFree;
+        final filterLactose = settings.isLactoseFree && !meal.isGlutenFree;
+        final filterVegan = settings.isVegan && !meal.isGlutenFree;
+        final filterVegetarian = settings.isVegetarian && !meal.isGlutenFree;
+        return !filterGluten &&
+            !filterLactose &&
+            !filterVegan &&
+            !filterVegetarian;
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +45,12 @@ class _MyAppState extends State<MyApp> {
               .copyWith(secondary: Colors.amber)),
       routes: {
         AppRoutes.HOME: (context) => const TabsScreen(),
-        AppRoutes.CATEGORIES_MEALS: (context) => CategoryMealsScreen(_availableMeals),
+        AppRoutes.CATEGORIES_MEALS: (context) =>
+            CategoryMealsScreen(_availableMeals),
         AppRoutes.MEAL_DETAIL: (context) => const MealDetailScreen(),
-        AppRoutes.SETTINGS: (context) => const SettingsScreen(),
+        AppRoutes.SETTINGS: (context) => SettingsScreen(
+              onSettingsChanged: _filterMeals,
+            ),
       },
     );
   }
