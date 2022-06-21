@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:food_recipes/components/main_drower.dart';
+import 'package:food_recipes/models/meal.dart';
 import 'package:food_recipes/screens/categories_screen.dart';
 import 'package:food_recipes/screens/favorite_screen.dart';
 
 class TabsScreen extends StatefulWidget {
-  const TabsScreen({Key? key}) : super(key: key);
+  final List<Meal> favotiteMeals;
+
+  const TabsScreen({
+    required this.favotiteMeals,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<TabsScreen> createState() => _TabsScreenState();
@@ -12,16 +18,24 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedScreenIndex = 0;
+
   final List<String> _titles = [
     'Lista de Categorias',
     'Meus Favoritos',
   ];
-  final List<Widget> _screens = [
-    const CategoriesScreen(),
-    const FavoriteScreen(),
-  ];
 
-  _selectSceen(int index) {
+  List<Widget> _screens = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      const CategoriesScreen(),
+      FavoriteScreen(favoriteMeals: widget.favotiteMeals),
+    ];
+  }
+
+  _selectScreen(int index) {
     setState(() {
       _selectedScreenIndex = index;
     });
@@ -34,9 +48,9 @@ class _TabsScreenState extends State<TabsScreen> {
         title: Center(child: Text(_titles[_selectedScreenIndex])),
       ),
       body: _screens[_selectedScreenIndex],
-      drawer:  MainDrawer(),
+      drawer: const MainDrawer(),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: _selectSceen,
+        onTap: _selectScreen,
         unselectedItemColor: Colors.white,
         selectedItemColor: Theme.of(context).colorScheme.secondary,
         backgroundColor: Theme.of(context).colorScheme.primary,
