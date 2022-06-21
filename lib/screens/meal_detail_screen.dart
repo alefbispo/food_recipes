@@ -3,8 +3,12 @@ import 'package:food_recipes/models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
   final Function(Meal) onToggleFavorite;
-  const MealDetailScreen({required this.onToggleFavorite, Key? key})
-      : super(key: key);
+  final Function(Meal) isavorite;
+  const MealDetailScreen({
+    required this.onToggleFavorite,
+    required this.isavorite,
+    Key? key,
+  }) : super(key: key);
 
   Widget _createSectionTitle(BuildContext context, String title) {
     return Container(
@@ -100,10 +104,15 @@ class MealDetailScreen extends StatelessWidget {
         onPressed: () {
           onToggleFavorite(meal);
         },
-        child: const Icon(
-          Icons.favorite,
-          color: Colors.red,
-        ),
+        child: (isavorite(meal))
+            ? const Icon(
+                Icons.favorite,
+                color: Colors.red,
+              )
+            : const Icon(
+                Icons.favorite_border,
+                color: Colors.red,
+              ),
       ),
     );
   }
